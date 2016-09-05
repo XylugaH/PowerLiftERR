@@ -5,7 +5,7 @@ import java.util.Random;
 import com.xylugah.model.Request;
 
 public class RequestGenerator implements Runnable{
-	private final long TIME_GENERATION = 10L; 
+	private final long TIME_GENERATION = 2000L; 
 	private final int COUNT_OF_REQUESTS = 2000;
 	private int requestID = 0;
 	private final Thread thread;

@@ -23,8 +23,8 @@ public class Controller {
 	public Controller(final int countFlors, final int countElevators){
 		this.countFlors = countFlors;
 		this.countElevators = countElevators;
-		executedRequests = new AtomicInteger[countFlors];
-		for (int i = 0; i < countFlors; i++) {
+		executedRequests = new AtomicInteger[countFlors+1];
+		for (int i = 0; i <= countFlors; i++) {
 			executedRequests[i] = new AtomicInteger(0);
 		}
 

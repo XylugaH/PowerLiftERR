@@ -3,7 +3,7 @@ package com.xylugah.model;
 import com.xylugah.controller.Controller;
 
 public class Elevator implements Runnable{
-		private final long speed = 10L;
+		private final long speed = 1000L;
 		private final int id;
 		private int currentFlor;
 		private boolean isFull = false;

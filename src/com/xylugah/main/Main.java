@@ -10,7 +10,7 @@ import com.xylugah.view.Printer;
 
 public class Main {
 	public static int COUNT_FLORS = 9;
-	public static int COUNT_ELEVATORS = 100;
+	public static int COUNT_ELEVATORS = 10;
 	public static Object lock = new Object();
 	public static List<Elevator> arrayOfElevators = new CopyOnWriteArrayList<Elevator>();
 	
