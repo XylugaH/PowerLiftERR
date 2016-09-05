@@ -16,11 +16,11 @@ public class Elevator implements Runnable{
 			return this.thread;
 		}
 		
-		public Elevator(final int id, final Controller c){
+		public Elevator(final int id, final Controller controller){
 			this.thread = new Thread(this);
 			this.id = id;
 			this.currentFlor = 1;
-			this.controller = c;
+			this.controller = controller;
 			return;
 		}
 
@@ -62,9 +62,9 @@ public class Elevator implements Runnable{
 					return;
 				}
 				if (currentFlor>targetFlor){
-					currentFlor-=1;
+					currentFlor--;
 				}else{
-					currentFlor+=1;					
+					currentFlor++;					
 				}
 			}
 		}
@@ -85,8 +85,11 @@ public class Elevator implements Runnable{
 				}else{			
 					move(request.getStartFlor());
 					controller.processingRequest(this.id);
+					setFull(true);
 					move(getRequest().getTargetFlor());
-					controller.executeRequest(this.id);
+					controller.executeRequest(this.request);
+					setFull(false);
+					setRequest(null);
 				}
 				
 			}

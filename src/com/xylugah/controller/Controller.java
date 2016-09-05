@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.xylugah.main.Main;
 import com.xylugah.model.Elevator;
@@ -14,18 +15,19 @@ import com.xylugah.model.Request;
 public class Controller {
 	private final int countFlors;
 	private final int countElevators;
-	private final List<Elevator> arrayOfElevators = new CopyOnWriteArrayList<Elevator>();
 	private Queue<Request> requestQueue = new LinkedList<Request>();
 	private	Map<Integer, Request> inProccessRequests = new ConcurrentHashMap<Integer, Request>();
-	private List<Request> executedRequests = new CopyOnWriteArrayList<Request>();
+	private AtomicInteger[] executedRequests;
 	
 	
 	public Controller(final int countFlors, final int countElevators){
 		this.countFlors = countFlors;
 		this.countElevators = countElevators;
-		for (int i = 0; i < countElevators; i++) {
-			arrayOfElevators.add(new Elevator(i,this));
+		executedRequests = new AtomicInteger[countFlors];
+		for (int i = 0; i < countFlors; i++) {
+			executedRequests[i] = new AtomicInteger(0);
 		}
+
 	}
 
 	
@@ -38,18 +40,13 @@ public class Controller {
 		return countElevators;
 	}
 
-
-	public List<Elevator> getarrayOfElevators(){
-		return this.arrayOfElevators;
-	}
-	
 	
 	public Map<Integer, Request> getInProccessRequests() {
 		return inProccessRequests;
 	}
 
 
-	public List<Request> getArrayServiceRequest() {
+	public AtomicInteger[] getArrayServiceRequest() {
 		return executedRequests;
 	}
 
@@ -81,12 +78,11 @@ public class Controller {
 	
 	public void processingRequest(final int idElevator){
 		inProccessRequests.remove(idElevator);
-		arrayOfElevators.get(idElevator).setFull(true);
 	}
 	
-	public void executeRequest(final int idElevator){
-			executedRequests.add(arrayOfElevators.get(idElevator).getRequest());
-			arrayOfElevators.get(idElevator).setFull(false);
-			arrayOfElevators.get(idElevator).setRequest(null);
+	public void executeRequest(final Request request){
+		final int i = request.getTargetFlor();
+		executedRequests[i].incrementAndGet();
+
 	}
 }

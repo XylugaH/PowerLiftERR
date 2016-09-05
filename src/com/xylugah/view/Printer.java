@@ -2,8 +2,10 @@ package com.xylugah.view;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.xylugah.controller.Controller;
+import com.xylugah.main.Main;
 import com.xylugah.model.Elevator;
 import com.xylugah.model.Request;
 
@@ -22,9 +24,9 @@ public class Printer implements Runnable{
 	}
 	
 	private void print(){
-		List<Elevator> elevators = controller.getarrayOfElevators();
+		List<Elevator> elevators = Main.arrayOfElevators;
 		Map<Integer, Request> arrayWaitingRequest = controller.getInProccessRequests();
-		List<Request> arrayServiceRequest = controller.getArrayServiceRequest();
+		AtomicInteger[] arrayServiceRequest = controller.getArrayServiceRequest();
 		
 		for (int i = controller.getCountFlors(); i > 0; i--) {
 			int x = 0;
@@ -47,15 +49,10 @@ public class Printer implements Runnable{
 				}
 				System.out.print(" ");
 			}
-			System.out.print("]");
+			System.out.print("]");	
+
+			System.out.print(arrayServiceRequest[i].get());
 			
-			x=0;
-			for (Request request : arrayServiceRequest) {
-				if (request.getTargetFlor() == i){
-					x+=1;
-				}
-			}
-			System.out.print(x);
 			System.out.println();
 		}
 		System.out.println();
