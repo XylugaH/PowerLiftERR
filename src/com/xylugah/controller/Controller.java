@@ -17,15 +17,15 @@ public class Controller {
 	private final int countElevators;
 	private Queue<Request> requestQueue = new LinkedList<Request>();
 	private	Map<Integer, Request> inProccessRequests = new ConcurrentHashMap<Integer, Request>();
-	private AtomicInteger[] executedRequests;
+	private AtomicInteger[] countOfExecutedRequests;
 	
 	
 	public Controller(final int countFlors, final int countElevators){
 		this.countFlors = countFlors;
 		this.countElevators = countElevators;
-		executedRequests = new AtomicInteger[countFlors+1];
+		countOfExecutedRequests = new AtomicInteger[countFlors+1];
 		for (int i = 0; i <= countFlors; i++) {
-			executedRequests[i] = new AtomicInteger(0);
+			countOfExecutedRequests[i] = new AtomicInteger(0);
 		}
 
 	}
@@ -47,7 +47,7 @@ public class Controller {
 
 
 	public AtomicInteger[] getArrayServiceRequest() {
-		return executedRequests;
+		return countOfExecutedRequests;
 	}
 
 
@@ -82,7 +82,7 @@ public class Controller {
 	
 	public void executeRequest(final Request request){
 		final int i = request.getTargetFlor();
-		executedRequests[i].incrementAndGet();
+		countOfExecutedRequests[i].incrementAndGet();
 
 	}
 }
